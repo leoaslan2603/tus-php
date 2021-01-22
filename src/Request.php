@@ -87,7 +87,11 @@ class Request
      */
     public function url() : string
     {
-        return rtrim($this->request->getUriForPath('/'), '/');
+        return str_replace(
+            ['https://', 'http://'],
+            $this->getRequest()->getScheme() . '://',
+            rtrim($this->request->getUriForPath('/'), '/')
+        );
     }
 
     /**
