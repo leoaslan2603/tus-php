@@ -85,13 +85,15 @@ class Request
      *
      * @return string
      */
-    public function url() : string
+    public function url(): string
     {
-        return str_replace(
-            ['https://', 'http://'],
-            $this->getRequest()->getScheme() . '://',
-            rtrim($this->request->getUriForPath('/'), '/')
-        );
+        $url = rtrim($this->request->getUriForPath('/'), '/');
+
+        if (function_exists('config') && config('app.force_https')) {
+            $url = str_replace('http://', 'https://', $url);
+        }
+
+        return $url;
     }
 
     /**
